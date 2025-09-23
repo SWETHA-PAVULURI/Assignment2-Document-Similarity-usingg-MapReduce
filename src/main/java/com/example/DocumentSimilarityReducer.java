@@ -36,7 +36,7 @@ public class DocumentSimilarityReducer extends Reducer<Text, Text, Text, Text> {
                     double similarity = (double) intersection.size() / union.size();
 
                     // Only output pairs with similarity >= 50% (0.50 in decimal)
-                    if (similarity >= 0.50) {
+                    if (similarity >= 0.00) {
                         String outputKey = "(" + docIds.get(i) + ", " + docIds.get(j) + ")";
                         String outputValue = (int) (similarity * 100) + "%";  // Convert to percentage
                         context.write(new Text(outputKey), new Text(outputValue));

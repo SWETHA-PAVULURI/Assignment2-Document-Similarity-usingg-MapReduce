@@ -1,32 +1,35 @@
-import os
 import random
 
-# Sample vocabulary
-WORDS = [
-    "hadoop", "mapreduce", "spark", "data", "analytics", "cloud", "machine",
-    "learning", "distributed", "parallel", "processing", "document", "similarity",
-    "database", "storage", "network", "security", "python", "java", "scalability",
-    "system", "algorithm", "big", "mining", "tokenization", "stemming", "index",
-    "query", "stream", "computation", "cluster", "performance", "model", "training",
-    "testing", "natural", "language", "processing", "neural", "network", "inference"
-]
+# Define vocab groups (topics)
+BIG_DATA = ["hadoop", "mapreduce", "spark", "data", "analytics", "cloud",
+            "distributed", "parallel", "processing", "cluster"]
 
-def generate_dataset(num_words, filename):
-    words_written = 0
-    doc_id = 1
+ML = ["machine", "learning", "neural", "model", "training", "testing",
+      "inference", "natural", "language", "processing"]
+
+DATABASE = ["database", "query", "storage", "system", "performance",
+            "scalability", "network", "security", "index"]
+
+COMMON = ["python", "java", "algorithm", "big", "mining", "stream", "tokenization", 
+          "stemming", "similarity", "document"]
+
+def generate_biased_doc(doc_name, length, main_topic, bias=0.7):
+    """Generate a document with topic bias."""
+    doc_words = []
+    for _ in range(length):
+        if random.random() < bias:  # Pick from main topic
+            doc_words.append(random.choice(main_topic))
+        else:  # Pick from other/common words
+            pool = BIG_DATA + ML + DATABASE + COMMON
+            doc_words.append(random.choice(pool))
+    return f"{doc_name} " + " ".join(doc_words) + "\n"
+
+def generate_dataset(filename):
     with open(filename, "w") as f:
-        while words_written < num_words:
-            # Each document has 50–100 words
-            doc_length = random.randint(50, 100)
-            doc_length = min(doc_length, num_words - words_written)
-            doc_words = [random.choice(WORDS) for _ in range(doc_length)]
-            line = f"Document{doc_id} " + " ".join(doc_words) + "\n"
-            f.write(line)
-            words_written += doc_length
-            doc_id += 1
-    print(f"{filename} generated with {words_written} words across {doc_id-1} documents.")
+        f.write(generate_biased_doc("Document1", 1000, BIG_DATA))
+        f.write(generate_biased_doc("Document2", 3000, ML))
+        f.write(generate_biased_doc("Document3", 5000, DATABASE))
+    print(f"{filename} generated with topic-biased documents.")
 
 if __name__ == "__main__":
-    generate_dataset(1000, "dataset1.txt")
-    generate_dataset(3000, "dataset2.txt")
-    generate_dataset(5000, "dataset3.txt")
+    generate_dataset("documentdataset.txt")
