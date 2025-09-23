@@ -244,3 +244,15 @@ Total reduce time across all slots: 13472 ms
 CPU time spent: 700 ms
 
 Job completed in roughly 14 seconds.
+
+---
+## Conclusion
+
+-The MapReduce program successfully computes the Jaccard Similarity between documents in a distributed environment using Hadoop.
+
+-Using Mapper and Reducer, the solution efficiently tokenizes documents, generates unique document pairs, and calculates similarity scores.
+
+-The program demonstrates the scalability of Hadoop, handling datasets across single-node and multi-node clusters, with noticeable differences in execution time.
+
+-Overall, this assignment highlights the effectiveness of distributed processing for large-scale document similarity analysis.
+
